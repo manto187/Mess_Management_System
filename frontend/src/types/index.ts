@@ -1,7 +1,7 @@
-export type Role = 'ADMIN' | 'MANAGER';
-export type MemberStatus = 'ACTIVE' | 'INACTIVE';
+export type Role = 'MUNSHI';
+export type StudentStatus = 'ACTIVE' | 'ARCHIVED';
 export type MealType = 'BREAKFAST' | 'LUNCH' | 'DINNER';
-export type ExpenseCategory = 'GROCERY' | 'UTILITY' | 'SALARY' | 'OTHER';
+export type ExpenseCategory = 'VEGETABLES' | 'MEAT' | 'RICE' | 'FLOUR' | 'GAS' | 'UTILITIES' | 'SALARY' | 'GROCERY' | 'UTILITY' | 'OTHER';
 export type PaymentStatus = 'PENDING' | 'PAID' | 'PARTIAL';
 
 export interface User {
@@ -12,23 +12,28 @@ export interface User {
   createdAt: string;
 }
 
-export interface Member {
+export interface Student {
   id: string;
   name: string;
   phone?: string;
   room?: string;
-  status: MemberStatus;
+  status: StudentStatus;
+  balance: number;
   joinedAt: string;
   createdAt: string;
   _count?: { meals: number; payments: number };
 }
 
+// Map Member to Student for UI compatibility if needed
+export type Member = Student;
+
 export interface Meal {
   id: string;
-  memberId: string;
-  member: { id: string; name: string };
+  studentId: string;
+  student?: Student;
   date: string;
   type: MealType;
+  amount: number;
   createdAt: string;
 }
 
@@ -44,14 +49,15 @@ export interface Expense {
 
 export interface Payment {
   id: string;
-  memberId: string;
-  member: { id: string; name: string; room?: string };
+  studentId: string;
+  student?: Student;
   amount: number;
   month: number;
   year: number;
   status: PaymentStatus;
   paidAt?: string;
   note?: string;
+  createdAt: string;
 }
 
 export interface DashboardStats {
