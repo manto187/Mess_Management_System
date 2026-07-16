@@ -50,3 +50,14 @@ docker compose up -d
 - **Large Touch Targets**: High buttons and inputs for easy mobile use.
 - **Soft Colors**: Emerald and Teal gradients for a premium, calming feel.
 - **Minimalist**: Cards instead of complex tables to reduce cognitive load for non-technical users.
+
+## Roadmap
+
+- [ ] QR Code Attendance
+- [ ] SMS Notifications
+- [ ] WhatsApp Notifications
+- [ ] Expense Analytics
+- [ ] PDF Reports
+- [ ] Multi-language Support
+- [ ] Dark Mode
+- [ ] Offline Mode
