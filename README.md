@@ -18,7 +18,7 @@ A production-ready, mobile-first Mess Management System with a focus on simplici
 
 ## Getting Started
 
-### 1. Prerequisites
+### 1. Prerequisitess
 - Node.js 20+
 - PostgreSQL (or Docker to run the included `docker-compose.yml`)
 
