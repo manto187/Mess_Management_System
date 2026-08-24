@@ -1,0 +1,86 @@
+═══════════════════════════════════════════════════════════════
+  QUICK FIX CHECKLIST - Internal Server Error
+═══════════════════════════════════════════════════════════════
+
+□ Step 1: Stop Backend (if running)
+  Press Ctrl+C in backend terminal
+
+□ Step 2: Run Fix Script
+  cd Mess_Management_System
+  .\fix-backend.ps1
+  
+  OR manually:
+  cd backend
+  rm -rf dist node_modules/.prisma src/generated
+  npm install @prisma/client
+  npx prisma generate
+  node diagnose.js
+  npm run start:dev
+
+□ Step 3: Wait for Success Message
+  ✅ "🚀 Server running on http://localhost:3001/api/v1"
+  
+  If you see errors about "meal" or "MealType":
+  ❌ Stop and run fix script again
+
+□ Step 4: Test Backend API
+  Open in browser:
+  http://localhost:3001/api/v1/attendance/all-students?date=2026-05-10
+  
+  Should show JSON with students data
+
+□ Step 5: Start Frontend (New Terminal)
+  cd frontend
+  npm run dev
+  
+  Wait for:
+  ✅ "Ready - started server on 0.0.0.0:3000"
+
+□ Step 6: Test in Browser
+  Open: http://localhost:3000
+  
+  □ Login works?
+  □ Members page shows students?
+  □ Attendance page shows students?
+  
+  If NO:
+  - Check backend terminal for errors
+  - Check browser console (F12) for errors
+  - Run: node diagnose.js
+
+═══════════════════════════════════════════════════════════════
+  DIAGNOSTIC COMMANDS
+═══════════════════════════════════════════════════════════════
+
+Check database and students:
+  cd backend
+  node diagnose.js
+
+Check if backend is running:
+  curl http://localhost:3001/api/v1
+
+Open database browser:
+  cd backend
+  npx prisma studio
+
+═══════════════════════════════════════════════════════════════
+  COMMON ERRORS
+═══════════════════════════════════════════════════════════════
+
+Error: "Property 'meal' does not exist"
+Fix: Run fix script again
+
+Error: "Cannot connect to database"
+Fix: Check PostgreSQL is running
+
+Error: "Internal Server Error"
+Fix: Check backend terminal for actual error
+
+Error: Students in Members but not in Attendance
+Fix: Clear browser cache (Ctrl+Shift+Delete) and refresh
+
+═══════════════════════════════════════════════════════════════
+
+START NOW: Run .\fix-backend.ps1
+
+═══════════════════════════════════════════════════════════════

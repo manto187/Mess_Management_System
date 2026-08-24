@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(MUNSHI)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("users")
+}
+
+model Student {
+  id        String        @id @default(cuid())
+  name      String
+  phone     String?
+  room      String?
+  hall      Hall?
+  status    StudentStatus @default(ACTIVE)
+  balance   Float         @default(0)
+  joinedAt  DateTime      @default(now())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  payments     Payment[]
+  attendance   Attendance[]
+  transactions Transaction[]
+
+  @@index([status])
+  @@index([balance])
+  @@index([name])
+  @@index([room])
+  @@index([hall])
+  @@map("students")
+}
+
+model Attendance {
+  id           String           @id @default(uuid())
+  studentId    String
+  student      Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  date         DateTime         @db.Date
+  status       AttendanceStatus
+  cost         Float            @default(0)
+  mealQuantity Int              @default(1)
+  createdAt    DateTime         @default(now())
+
+  @@unique([studentId, date])
+  @@index([studentId])
+  @@index([date])
+  @@index([status])
+  @@map("attendance")
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  studentId   String
+  student     Student         @relation(fields: [studentId], references: [id])
+  amount      Float
+  type        TransactionType
+  method      PaymentMethod?
+  description String?
+  date        DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+
+  @@index([studentId])
+  @@index([date])
+  @@index([type])
+  @@index([createdAt])
+  @@map("transactions")
+}
+
+model SystemConfig {
+  id    String @id @default("config")
+  key   String @unique
+  value String
+}
+
+model Expense {
+  id          String          @id @default(cuid())
+  title       String
+  amount      Float
+  category    ExpenseCategory
+  date        DateTime        @db.Date
+  description String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([date])
+  @@index([category])
+  @@map("expenses")
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  studentId String
+  amount    Float
+  month     Int
+  year      Int
+  status    PaymentStatus @default(PENDING)
+  paidAt    DateTime?
+  note      String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  student   Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, month, year])
+  @@index([studentId])
+  @@index([month, year])
+  @@index([status])
+  @@map("payments")
+}
+
+enum Role {
+  MUNSHI
+}
+
+enum StudentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ExpenseCategory {
+  VEGETABLES
+  MEAT
+  RICE
+  FLOUR
+  GAS
+  UTILITIES
+  SALARY
+  GROCERY
+  UTILITY
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  PARTIAL
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LEAVE
+}
+
+enum TransactionType {
+  DEPOSIT
+  MEAL_CHARGE
+  REFUND
+}
+
+enum PaymentMethod {
+  CASH
+  EASYPAISA
+  JAZZCASH
+  BANK_TRANSFER
+}
+
+enum Hall {
+  FAISAL_HALL
+  ATIQUE_HALL
+  GHAZALI_HALL
+  ABBAS_MANZIL
+  PGR_HOSTEL
+  JOHAR_HALL
+}

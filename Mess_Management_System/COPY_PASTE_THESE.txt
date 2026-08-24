@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════════
+  WINDOWS - COPY PASTE THESE COMMANDS
+═══════════════════════════════════════════════════════════════
+
+METHOD 1: EASIEST (Batch Script)
+---------------------------------
+
+cd Mess_Management_System\backend
+fix-backend.bat
+
+
+METHOD 2: POWERSHELL COMMANDS
+------------------------------
+
+TERMINAL 1 (Backend):
+
+cd Mess_Management_System\backend
+Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force node_modules\.prisma -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force node_modules\@prisma -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force src\generated -ErrorAction SilentlyContinue
+npm install @prisma/client
+npx prisma generate
+node check-error.js
+npm run start:dev
+
+
+TERMINAL 2 (Frontend):
+
+cd Mess_Management_System\frontend
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue
+npm run dev
+
+
+═══════════════════════════════════════════════════════════════
+
+WHAT TO EXPECT:
+
+Backend Terminal:
+✅ "Prisma schema loaded"
+✅ "Generated Prisma Client"  
+✅ "Nest application successfully started"
+✅ "🚀 Server running on http://localhost:3001/api/v1"
+
+Frontend Terminal:
+✅ "Ready - started server on 0.0.0.0:3000"
+
+═══════════════════════════════════════════════════════════════
+
+TEST:
+
+1. Open: http://localhost:3001/api/v1/attendance/all-students?date=2026-05-10
+   Should show students data (not 500 error)
+
+2. Open: http://localhost:3000
+   Login → حاضری → Students should appear!
+
+═══════════════════════════════════════════════════════════════
+
+IF STILL ERROR:
+
+Run this to check database:
+cd backend
+node check-error.js
+
+Then share the output with me.
+
+═══════════════════════════════════════════════════════════════
+
+START NOW: Use METHOD 1 (Batch Script) - Easiest!
+
+═══════════════════════════════════════════════════════════════

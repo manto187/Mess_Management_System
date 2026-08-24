@@ -1,0 +1,67 @@
+═══════════════════════════════════════════════════════════════
+  FIX 500 ERROR - POWERSHELL COMMANDS
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Stop backend (press Ctrl+C in backend terminal)
+
+STEP 2: Run these PowerShell commands:
+
+cd Mess_Management_System\backend
+
+Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force node_modules\.prisma -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force node_modules\@prisma -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force src\generated -ErrorAction SilentlyContinue
+
+npm install @prisma/client
+
+npx prisma generate
+
+node check-error.js
+
+npm run start:dev
+
+STEP 3: Wait for this message:
+"🚀 Server running on http://localhost:3001/api/v1"
+
+STEP 4: Test in browser:
+http://localhost:3001/api/v1/attendance/all-students?date=2026-05-10
+
+Should show students data (not 500 error)
+
+STEP 5: Start frontend (NEW terminal):
+
+cd Mess_Management_System\frontend
+
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue
+
+npm run dev
+
+STEP 6: Test:
+http://localhost:3000
+Login → حاضری → Students should appear!
+
+═══════════════════════════════════════════════════════════════
+
+OR USE THE AUTOMATED SCRIPT:
+
+cd Mess_Management_System
+.\fix-backend.ps1
+
+Then in new terminal:
+cd frontend
+npm run dev
+
+═══════════════════════════════════════════════════════════════
+
+IF STILL 500 ERROR:
+
+1. Check backend terminal - what error shows?
+2. Run: node check-error.js
+3. Share the error output
+
+═══════════════════════════════════════════════════════════════
+
+START NOW: Copy commands from STEP 2 above!
+
+═══════════════════════════════════════════════════════════════

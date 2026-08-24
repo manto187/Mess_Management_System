@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════════
+  HALL SYSTEM - MIGRATION COMMANDS
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Run Database Migration
+────────────────────────────────────────────
+cd backend
+npx prisma migrate dev --name add_hall_to_students
+
+Expected output:
+✅ Prisma schema loaded
+✅ Datasource "db": PostgreSQL database
+✅ Migration created
+✅ Migration applied
+
+
+STEP 2: Regenerate Prisma Client
+────────────────────────────────────────────
+npx prisma generate
+
+Expected output:
+✅ Generated Prisma Client
+
+
+STEP 3: Restart Backend
+────────────────────────────────────────────
+npm run start:dev
+
+Expected output:
+✅ Nest application successfully started
+✅ 🚀 Server running on http://localhost:3001/api/v1
+
+
+STEP 4: Restart Frontend
+────────────────────────────────────────────
+cd frontend
+Remove-Item -Recurse -Force .next
+npm run dev
+
+Expected output:
+✅ Ready - started server on 0.0.0.0:3000
+
+
+═══════════════════════════════════════════════════════════════
+  TEST THE SYSTEM
+═══════════════════════════════════════════════════════════════
+
+1. Open: http://localhost:3000/students
+2. Click "نیا اسٹوڈنٹ" (New Student)
+3. Fill form with hall selection
+4. Save
+5. ✅ Hall should appear in student card
+6. Go to Attendance page
+7. ✅ Hall column should appear in table
+
+═══════════════════════════════════════════════════════════════
+
+READ FULL GUIDE: HALL_SYSTEM_IMPLEMENTATION.md
+
+═══════════════════════════════════════════════════════════════
